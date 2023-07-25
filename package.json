@@ -1,0 +1,44 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ."
+  },
+  "devDependencies": {
+    "@nuxt/bridge": "^0.10.1",
+    "@nuxt/devtools": "latest",
+    "@nuxt/kit": "^3.6.1",
+    "@nuxt/types": "^2.17.0",
+    "@nuxt/typescript-build": "^3.0.1",
+    "@nuxtjs/dotenv": "^1.4.1",
+    "@types/node": "^18",
+    "eslint": "^8.44.0",
+    "eslint-plugin-vue": "^9.15.1",
+    "nuxt": "^3.6.1",
+    "nuxt-icon": "^0.4.2",
+    "typescript": "*"
+  },
+  "dependencies": {
+    "@nuxt/image-edge": "^1.0.0-rc.1-28164352.ad7c010",
+    "@nuxtjs/composition-api": "^0.33.1",
+    "@nuxtjs/tailwindcss": "^6.8.0",
+    "@pinia/nuxt": "^0.4.11",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "aws-sdk": "^2.1414.0",
+    "mock-aws-s3": "^4.0.2",
+    "nock": "^13.3.1",
+    "ohmyfetch": "^0.4.21",
+    "pinia": "^2.1.4",
+    "vue-router": "^4.0.13",
+    "wait-on": "^7.0.1"
+  },
+  "overrides": {
+    "vue": "latest"
+  }
+}

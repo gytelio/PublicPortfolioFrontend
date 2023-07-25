@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Rounded Mplus 1c Bold;
+}
+
+p {
+    margin: 0 !important
+}
+
+.main_wrapper {
+    /* Rectangle 1081 */
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+
+    background: #242e30;
+}
+
+/* ---------------NAVBAR----------------- */
+
+.navbar_wrapper {
+    top: 0;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+} 
+    button{
+        background:transparent;
+        border:none;
+        position:relative;
+        height:60px;
+        font-size:1rem;
+        padding:0 2em;
+        cursor:pointer;
+        transition:800ms ease all;
+        outline:none;
+        padding: 0;
+    }
+
+    .link {
+        text-decoration: none;
+        color: #FFFFFF;
+    }
+    
+    .active {
+        color: #1AAB8A !important
+    }
+
+    button:hover{
+        background:#1AAB8A;
+    }
+
+    button:hover .active{
+        color: #FFFFFF !important
+    }
+
+    button:before,button:after{
+        content:'';
+        position:absolute;
+        top:0;
+        right:0;
+        height:2px;
+        width:0;
+        background: #1AAB8A;
+        transition:400ms ease all;
+    }
+    button:after{
+        right:inherit;
+        top:inherit;
+        left:0;
+        bottom:0;
+    }
+    button:hover:before,button:hover:after{
+        width:100%;
+        transition:800ms ease all;
+    }
+  
+/* ---------------SIDE----------------- */
+
+.open_component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #50513c;
+  position: fixed;
+  top: 0;
+  }
+  
+  .side_component {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .side_component.show {
+    transform: translateX(0%);
+    height: 100%;
+  }
+
+  .block_container {
+      overflow-y: scroll;
+      max-height: 100vh;
+      scroll-snap-type: y mandatory;
+  }
+
+  .block_container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .block_container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .block {
+    scroll-snap-align: center;
+  }
+
+  .arrow-left {
+    font-size: xxx-large;
+    color: white
+  }
+
+  .typewriter h1 {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    color: #FFF;
+    text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    font-family: Rounded Mplus 1c Bold;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em; /* Adjust as needed */
+    animation: 
+      typing 3.5s steps(40, end),
+      blink-caret .75s step-end infinite;
+  }
+  
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+  }
+
+
+
