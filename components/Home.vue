@@ -1,6 +1,9 @@
 <template>
   <div>
-    <image-add-form @added="uploadImage($event)" />
+    <image-add-form
+      v-if="user"
+      @added="uploadImage($event)"
+    />
     <div
       v-for="image of gallery"
       :key="image.public_id"
@@ -11,10 +14,13 @@
         height="160"
         :modifiers="{ roundCorner: 'max', effect: 'grayscale' }"
       />
-      <button @click="deleteImage(image.public_id)">
+      <button
+        v-if="user"
+        @click="deleteImage(image.public_id)"
+      >
         Delete
       </button>
-      <div>
+      <div v-if="user">
         <button @click="showUpdate = !showUpdate">
           {{ !showUpdate ? "Update" : "Close" }}
         </button>
@@ -32,6 +38,7 @@ import { defineComponent } from "vue";
 import photo from "~/routes/photos/api";
 import { IPhoto } from "~/types/types";
 import ImageAddForm from "./ImageAddForm.vue";
+import { userStore } from "../pinia/auth";
 
 export default defineComponent({
   components: { ImageAddForm },
@@ -40,6 +47,7 @@ export default defineComponent({
       imageUrl: null as string | null,
       gallery: [] as IPhoto[],
       showUpdate: false,
+      user: null as string | null,
     };
   },
   async mounted() {
@@ -50,6 +58,8 @@ export default defineComponent({
     } catch (error) {
       console.error(error);
     }
+    const basket = userStore();
+    this.user = basket.user;
   },
   methods: {
     async uploadImage(image: FormData) {

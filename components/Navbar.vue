@@ -2,6 +2,9 @@
   <div
     class="navbar_wrapper"
   >
+    <div v-if="user">
+      Login:{{ user }}
+    </div>
     <div
       v-for="tab,index of tabs"
       id="navbar"
@@ -39,12 +42,19 @@
 <script lang="ts">
 import { defineComponent } from "vue";    
 import "../styles/main.css";
+import { userStore } from "../pinia/auth";
+
 // import HomeIcon from "../icons/Home.vue";
 export default defineComponent({
   data() {
     return {
       tabs: [{ name: "Home", page: "/" }, { name: "Photos", page: "/photos" }, { name: "Contact", page: "/contact" }],
+      user: null as string | null,
     };
+  },
+  mounted() {
+    const basket = userStore();
+    this.user = basket.user;
   },
 });
 </script>

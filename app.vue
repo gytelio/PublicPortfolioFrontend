@@ -5,13 +5,30 @@
 </template>
 
 <script>
-import { createPinia } from "pinia";
-const pinia = createPinia();
+import { onBeforeMount } from "vue";
+import jwtDecode from "jwt-decode";
+import Cookies from "js-cookie";
+import { userStore } from "./pinia/auth";
 
 export default {
   name: "App",
-  async beforeCreate() {
-    this.$pinia = pinia;
+  setup() {
+    const store = userStore();
+    onBeforeMount(() => {
+      const token = Cookies.get("jwt");
+      if (token) {
+        try {
+          const decodedToken = jwtDecode(token);
+          const userData = decodedToken;
+          store.user = userData.email;
+          store.auth = true;
+        } catch (error) {
+          console.error("Failed to decode the token", error);
+        }
+      }
+    });
+
+    return { store };
   },
 };
 </script>
@@ -19,9 +36,5 @@ export default {
 <style>
 #app {
   text-align: center;
-}
-
-h1 {
-  color: #2b4137;
 }
 </style>

@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import App from "./App.vue"; // or the path to your root component
+import App from "./app.vue"; // or the path to your root component
 import router from "./routes/index";
 
 const pinia = createPinia();
