@@ -1,24 +1,28 @@
 <template>
-  <div class="main_wrapper">
+  <div>
     <NuxtLayout>
-      <div class="block_container">
+      <div
+        ref="container"
+        class="block_container"
+        @scroll="handleContainerScroll"
+      >
         <div class="d-flex flex-column snap_wrapper">
           <Home
             ref="home"
             class="h-screen block"
-            style="background: rgb(71, 64, 72);"
+            style="background: rgb(0, 0, 0);"
             data-route="/"
           />
           <Photos
             ref="photos"
             class="h-screen block"
-            style="background: rgb(36, 37, 54);"
+            style="background: rgb(53, 53, 53);"
             data-route="/photos"
           />
           <Contact
             ref="contact"
             class="h-screen block"
-            style="background: rgb(71, 49, 39);"
+            style="background: rgb(105, 105, 105);"
             data-route="/contact"
           />
         </div>
@@ -30,7 +34,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import "../styles/main.css";
-// import HomeIcon from "../icons/Home.vue";
+
 export default defineComponent({
   data() {
     return {
@@ -39,21 +43,17 @@ export default defineComponent({
         { name: "Photos", page: "/photos" },
         { name: "Contact", page: "/contact" },
       ],
+      isHomeVisible: true,
     };
   },
-
   methods: {
-  
+    handleContainerScroll(_event: Event) {
+      setTimeout(() => {
+        const container = this.$refs.container as HTMLElement;
+        const scrollTop = container.scrollTop;
+        this.isHomeVisible = scrollTop <= 10;
+      }, 300);
+    },
   },
 });
 </script>
-
-<style>
-  #app {
-    text-align: center;
-  }
-
-  h1 {
-    color: #2b4137;
-  }
-</style>

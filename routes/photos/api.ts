@@ -1,7 +1,7 @@
 export default function photo() {
   return {
-    async post(data: FormData): Promise<Response> {
-      return await fetch("http://localhost:8000/photo", {
+    async post(data: FormData, main_index: number | null): Promise<Response> {
+      return await fetch(`http://localhost:8000/photo/${main_index}`, {
         method: "POST",
         body: data,
         credentials: "include",

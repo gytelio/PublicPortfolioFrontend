@@ -3,18 +3,18 @@
     <form
       method="post"
       enctype="multipart/form-data"
-      @submit.prevent="uploadImage"
+      @submit="uploadImage"
     >
-      <label for="imageUpload">Select an image:</label>
       <input
         id="imageUpload"
         ref="fileInput"
+        class="button"
         type="file"
         name="file"
       >
       <br>
       <button type="submit">
-        Upload
+        Save
       </button>
     </form>
   </div>

@@ -1,33 +1,47 @@
 <template>
-  <div>
-    <image-add-form
-      v-if="user"
-      @added="uploadImage($event)"
-    />
-    <div
-      v-for="image of gallery"
-      :key="image.public_id"
-    >
-      <nuxt-img 
-        :src="image.url"
-        width="400"
-        height="160"
-        :modifiers="{ roundCorner: 'max', effect: 'grayscale' }"
+  <div class="flex">
+    <div :style="{width: `${40}%`}">
+      <PhotoEditor
+        :photo="mainPhotos[1] ?? null"
+        :height="'100vh'"
+        :width="'100vh'"
+        :main-index="1"
       />
-      <button
-        v-if="user"
-        @click="deleteImage(image.public_id)"
-      >
-        Delete
-      </button>
-      <div v-if="user">
-        <button @click="showUpdate = !showUpdate">
-          {{ !showUpdate ? "Update" : "Close" }}
-        </button>
-        <image-add-form
-          v-if="showUpdate"
-          @added="updateImage($event, image.public_id)"
+    </div>
+    <div class="flex items-center justify-center h-screen">
+      <div class="photo-wrapper relative">
+        <PhotoEditor
+          :photo="mainPhotos[2] ?? null"
+          :height="'100vh'"
+          :main-index="2"
         />
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <div class="w-full h-1 bg-white mb-2" />
+          <div class="relative">
+            <div class="typewriter">
+              <h1 class="text-white text-center">
+                I'm Kamile, a photographer from Lithuania
+              </h1>
+              <p class="text-xs text-white description-font">
+                Set an element’s line-height at the same time you set the 
+                font size by adding a line-height modifier to any font size utility.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="absolute bottom-0 w-full text-center">
+          <button class="more_button">
+            <div
+              class="d-flex justify-content-start align-items-center flex-row"
+            >
+              See more
+              <Icon
+                name="uil:arrow-down"
+                class="text-2xl"
+              />
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -35,55 +49,35 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import photo from "~/routes/photos/api";
 import { IPhoto } from "~/types/types";
-import ImageAddForm from "./ImageAddForm.vue";
 import { userStore } from "../pinia/auth";
+import { galleryStore } from "../pinia/photos";
 
 export default defineComponent({
-  components: { ImageAddForm },
   data() {
     return {
-      imageUrl: null as string | null,
-      gallery: [] as IPhoto[],
-      showUpdate: false,
       user: null as string | null,
+      showSide: true,
+      gallery: [] as IPhoto[],
     };
   },
-  async mounted() {
-    try {
-      const response = await photo().get();
-      this.gallery = await response.json();
-      console.log({ response: this.gallery });
-    } catch (error) {
-      console.error(error);
-    }
-    const basket = userStore();
-    this.user = basket.user;
+  computed: {
+    mainPhotos() {
+      const main: { [int: number]: IPhoto } = {};
+      for (const photo of this.gallery.filter(el => el.main_index).sort((a, b) => a.main_index || 0 - (b.main_index || 0))) {
+        main[photo.main_index!] = photo;
+      }
+      return main;
+    },
+  },  
+  mounted() {
+    const userBasket = userStore();
+    this.user = userBasket.user;
+    const galleryBasket = galleryStore();
+    this.gallery = galleryBasket.gallery;
   },
   methods: {
-    async uploadImage(image: FormData) {
-      try {
-        await photo().post(image);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async deleteImage(public_id: string) {
-      try {
-        await photo().delete(public_id);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async updateImage(image: FormData, public_id: string) {
-      try {
-        await photo().patch(image, public_id);
-        this.showUpdate = false;
-      } catch (error) {
-        console.error(error);
-      }
-    },
+  
   },
 });
 </script>

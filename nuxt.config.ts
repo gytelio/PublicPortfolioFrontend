@@ -1,7 +1,7 @@
 import { defineNuxtConfig } from "@nuxt/bridge";
 import ohmyfetch from "ohmyfetch";
 
-const apiBaseURL = (process.env.API_BASE_URL != null) || "https://localhost:8000";
+const apiBaseURL = (process.env.API_BASE_URL != null) ?? "https://localhost:8000";
 
 export default defineNuxtConfig({
   devtools: { enabled: true },

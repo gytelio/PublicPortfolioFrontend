@@ -5,30 +5,36 @@
 </template>
 
 <script>
-import { onBeforeMount } from "vue";
 import jwtDecode from "jwt-decode";
+import photo from "~/routes/photos/api";
 import Cookies from "js-cookie";
 import { userStore } from "./pinia/auth";
+import { galleryStore } from "./pinia/photos";
 
 export default {
   name: "App",
-  setup() {
+  async beforeCreate() {
     const store = userStore();
-    onBeforeMount(() => {
-      const token = Cookies.get("jwt");
-      if (token) {
-        try {
-          const decodedToken = jwtDecode(token);
-          const userData = decodedToken;
-          store.user = userData.email;
-          store.auth = true;
-        } catch (error) {
-          console.error("Failed to decode the token", error);
-        }
-      }
-    });
+    const photosStore = galleryStore();
 
-    return { store };
+    const token = Cookies.get("jwt");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        const userData = decodedToken;
+        store.user = userData.email;
+        store.auth = true;
+      } catch (error) {
+        console.error("Failed to decode the token", error);
+      }
+    }
+
+    try {
+      const response = await photo().get();
+      photosStore.gallery = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
 </script>
