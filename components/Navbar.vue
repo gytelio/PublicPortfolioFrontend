@@ -3,13 +3,14 @@
     class="navbar_wrapper"
   >
     <div>
-      <h1 class="title">
-        <Icon name="uil:camera" />
+      <h1 class="title m-2">
+        <!-- <Icon name="uil:camera" /> -->
         KamileTography
       </h1>
       <div
         v-if="user"
-        class="text-xs text-white"
+        class="text-xs text-white cursor-pointer"
+        @click="$router.push('/login');"
       >
         <Icon name="uil:user" />
         {{ user }}
@@ -28,7 +29,7 @@
             :class="{ active: $route.name != 'index' ? $route.path == tab.page : tab.page == '/' }"
           > 
             <div
-              class="flex justify-center items-center gap-0.5"
+              class="flex justify-center items-center gap-0.5 theyPerished"
             >
               {{ tab.name }}
               <Icon

@@ -26,6 +26,18 @@ p {
     margin: 0 !important
 }
 
+.madeleina {
+  text-transform: uppercase;
+  font-family: "Madeleina", sans-serif;
+  font-weight: lighter;
+}
+
+.theyPerished {
+  text-transform: uppercase;
+  font-family: "TheyPerished", sans-serif;
+  font-weight: lighter;
+}
+
 .title {
   text-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   text-transform: uppercase;
@@ -139,6 +151,10 @@ p {
 
   .layer {
     opacity: 0.2;
+  }
+
+  .no-image {
+    width: 100vh;
   }
 
   .hide {

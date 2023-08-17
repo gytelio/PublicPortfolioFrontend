@@ -14,62 +14,54 @@
       <div
         v-else-if="user"
         :style="{width, height}"
-        class="flex items-center cursor-pointer z-50"
+        class="no-image flex items-end cursor-pointer z-50"
       >
         <h2 class="text-white">
           No photo
         </h2>
-        <div @click="user ? selected = true : undefined">
-          <Icon
-            class="text-white"
-            name="mdi:plus"
-          />
-        </div>
       </div>
     </div>
     <div
       v-if="user && selected"
-      class="absolute inset-0 flex justify-center items-center z-50"
+      class="fixed inset-0 flex justify-center items-center z-50 bg-opacity-50 bg-gray-900"
     >
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <button
-          class="bg-red-500 text-white px-4 py-2 rounded"
-          @click="selected = false"
+      <div class="bg-white rounded-lg shadow-md p-6 w-96">
+        <div
+          class="absolute top-2 right-2 text-white cursor-pointer"
+          @click.stop="closeModal()"
         >
           <Icon name="mdi:close" />
-        </button>
-        <div>
-          <div v-if="!photo">
-            <button
-              class="bg-blue-500 text-white px-4 py-2 rounded"
-              @click="showAdd = !showAdd"
-            >
-              {{ !showAdd ? "Add new" : "Close" }}
-            </button>
-            <image-add-form
-              v-if="showAdd"
-              class="bg-green-500 text-white px-4 py-2 rounded"
-              @added="uploadImage($event)"
-            />
-          </div>
-          <button
-            v-if="photo"
-            class="bg-red-500 text-white px-4 py-2 rounded"
-            @click="deleteImage(photo.public_id)"
-          >
-            Delete
-          </button>
         </div>
+        <div v-if="!photo">
+          <button
+            class="bg-blue-500 text-white px-4 py-2 rounded my-2 hover:bg-blue-600"
+            @click="showAdd = !showAdd"
+          >
+            {{ !showAdd ? "Add New" : "Close" }}
+          </button>
+          <image-add-form
+            v-if="showAdd"
+            class="bg-green-500 text-white px-4 py-2 rounded my-2"
+            @added="uploadImage($event)"
+          />
+        </div>
+        <button
+          v-if="photo"
+          class="bg-red-500 text-white px-4 py-2 rounded my-2 hover:bg-red-600"
+          @click="deleteImage(photo.public_id)"
+        >
+          Delete
+        </button>
         <div v-if="photo">
           <button
-            class="bg-blue-500 text-white px-4 py-2 rounded"
+            class="bg-blue-500 text-white px-4 py-2 rounded my-2 hover:bg-blue-600"
             @click="showUpdate = !showUpdate"
           >
             {{ !showUpdate ? "Update" : "Close" }}
           </button>
           <image-add-form
             v-if="showUpdate"
-            class="bg-green-500 text-white px-4 py-2 rounded"
+            class="bg-green-500 text-white px-4 py-2 rounded my-2"
             @added="updateImage($event, photo.public_id)"
           />
         </div>
@@ -105,7 +97,12 @@ export default defineComponent({
       type: Number,
       default: null,
     },
+    hiddenClicked: {
+      type: Boolean,
+      default: false,
+    },
   },
+  emits: ["open"],
   data() {
     return {
       showUpdate: false,
@@ -114,37 +111,62 @@ export default defineComponent({
       selected: false,
     };
   },
+  watch: {
+    hiddenClicked() {
+      if (this.hiddenClicked) {
+        this.selected = true;
+      } else {
+        this.selected = false;
+      }
+    },
+  },
   async mounted() {
     const userBasket = userStore();
     this.user = userBasket.user;
   },
   methods: {
     async uploadImage(image: FormData) {
-      try {
-        console.log("addd");
-        await photo().post(image, this.mainIndex);
-        this.selected = false;
-        this.showAdd = false;
-      } catch (error) {
-        console.error(error);
+      const confirmUpload = window.confirm("Are you sure you want to upload this image?");
+      if (confirmUpload) {
+        try {
+          await photo().post(image, this.mainIndex);
+          this.selected = false;
+          this.showAdd = false;
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
+
     async deleteImage(public_id: string) {
-      try {
-        await photo().delete(public_id);
-        this.selected = false;
-      } catch (error) {
-        console.error(error);
+      const confirmDelete = window.confirm("Are you sure you want to delete this image?");
+      if (confirmDelete) {
+        try {
+          await photo().delete(public_id);
+          this.selected = false;
+          this.$emit("open", false);
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
+
     async updateImage(image: FormData, public_id: string) {
-      try {
-        await photo().patch(image, public_id);
-        this.selected = false;
-        this.showUpdate = false;
-      } catch (error) {
-        console.error(error);
+      const confirmUpdate = window.confirm("Are you sure you want to update this image?");
+      if (confirmUpdate) {
+        try {
+          await photo().patch(image, public_id);
+          this.selected = false;
+          this.showUpdate = false;
+          this.$emit("open", false);
+        } catch (error) {
+          console.error(error);
+        }
       }
+    },
+    closeModal() {
+      this.selected = false; 
+      this.$emit("open", false);
     },
   },
 });

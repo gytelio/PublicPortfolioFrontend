@@ -1,124 +1,136 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded shadow-md flex items-center justify-center gap-0.5">
-      <div>
-        <h2 class="text-xl font-semibold mb-4">
-          Login
-        </h2>
-        <form @submit.prevent="login">
-          <div class="mb-2">
-            <label
-              for="log_email"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Username:
-            </label>
-            <input
-              id="log_email"
-              v-model="log_email"
-              type="text"
-              required
-              class="mt-1 p-2 border rounded w-full"
-            >
-          </div>
-          <div class="mb-4">
-            <label
-              for="log_password"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Password:
-            </label>
-            <input
-              id="log_password"
-              v-model="log_password"
-              type="password"
-              required
-              class="mt-1 p-2 border rounded w-full"
-            >
-          </div>
-          <button
-            type="submit"
-            class="bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            Login
-          </button>
-        </form>
-        <p
-          v-if="loginInfo"
-          class="text-red-500 mt-2"
-        >
-          {{ loginInfo }}
-        </p>
-      </div>
-      <div>
-        <h2 class="text-xl font-semibold mb-4">
-          Register new user
-        </h2>
-        <form @submit.prevent="register">
-          <div class="mb-2">
-            <label
-              for="reg_email"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Email:
-            </label>
-            <input
-              id="reg_email"
-              v-model="reg_email"
-              type="text"
-              required
-              class="mt-1 p-2 border rounded w-full"
-            >
-          </div>
-          <div class="mb-4">
-            <label
-              for="reg_password"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Password:
-            </label>
-            <input
-              id="reg_password"
-              v-model="reg_password"
-              type="password"
-              required
-              class="mt-1 p-2 border rounded w-full"
-            >
-          </div>
-          <button
-            type="submit"
-            class="bg-green-500 text-white py-2 px-4 rounded"
-          >
-            Register
-          </button>
-        </form>
-        <p
-          v-if="regInfo"
-          class="text-red-500 mt-2"
-        >
-          {{ regInfo }}
-        </p>
-      </div>
+    <div class="absolute left-0 top-0">
+      <button
+        class="bg-yellow-500 m-4 text-white py-2 px-4 rounded"
+        @click="$router.push('/')"
+      >
+        BACK
+      </button>
     </div>
-    <div
-      class="ml-4 cursor-pointer"
-      @click="logout"
-    >
+    <div class="flex flex-col">
+      <div class="bg-white p-8 rounded shadow-md flex items-center justify-center gap-0.5">
+        <div
+          v-if="user"
+          class="bg-violet-500 m-4 text-white absolute rounded py-2 px-4 top-0"
+        >
+          <Icon name="uil:user" />
+          {{ user }}
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold mb-4">
+            Login
+          </h2>
+          <form @submit.prevent="login">
+            <div class="mb-2">
+              <label
+                for="log_email"
+                class="block text-sm font-medium text-gray-700"
+              >
+                Username:
+              </label>
+              <input
+                id="log_email"
+                v-model="log_email"
+                type="text"
+                required
+                class="mt-1 p-2 border rounded w-full"
+              >
+            </div>
+            <div class="mb-4">
+              <label
+                for="log_password"
+                class="block text-sm font-medium text-gray-700"
+              >
+                Password:
+              </label>
+              <input
+                id="log_password"
+                v-model="log_password"
+                type="password"
+                required
+                class="mt-1 p-2 border rounded w-full"
+              >
+            </div>
+            <button
+              type="submit"
+              class="bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Login
+            </button>
+          </form>
+          <p
+            v-if="loginInfo"
+            class="text-red-500 mt-2"
+          >
+            {{ loginInfo }}
+          </p>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold mb-4">
+            Register new user
+          </h2>
+          <form @submit.prevent="register">
+            <div class="mb-2">
+              <label
+                for="reg_email"
+                class="block text-sm font-medium text-gray-700"
+              >
+                Email:
+              </label>
+              <input
+                id="reg_email"
+                v-model="reg_email"
+                type="text"
+                required
+                class="mt-1 p-2 border rounded w-full"
+              >
+            </div>
+            <div class="mb-4">
+              <label
+                for="reg_password"
+                class="block text-sm font-medium text-gray-700"
+              >
+                Password:
+              </label>
+              <input
+                id="reg_password"
+                v-model="reg_password"
+                type="password"
+                required
+                class="mt-1 p-2 border rounded w-full"
+              >
+            </div>
+            <button
+              type="submit"
+              class="bg-green-500 text-white py-2 px-4 rounded"
+            >
+              Register
+            </button>
+          </form>
+          <p
+            v-if="regInfo"
+            class="text-red-500 mt-2"
+          >
+            {{ regInfo }}
+          </p>
+        </div>
+      </div>
       <div
         v-if="user"
+        class="m-4 cursor-pointer"
+        @click="logout"
       >
-        <Icon name="uil:user" />
-        {{ user }}
+        <button class="bg-red-500 text-white py-2 px-4 rounded">
+          LOGOUT
+        </button>
+        <p
+          v-if="logoutInfo"
+          class="text-red-500 mt-2"
+        >
+          {{ logoutInfo }}
+        </p>
       </div>
-      <button class="bg-red-500 text-white py-2 px-4 rounded">
-        LOGOUT
-      </button>
-      <p
-        v-if="logoutInfo"
-        class="text-red-500 mt-2"
-      >
-        {{ logoutInfo }}
-      </p>
     </div>
   </div>
 </template>
